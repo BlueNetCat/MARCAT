@@ -306,6 +306,7 @@ export default {
 
 .tooltip {
   transition: all 0.05s ease-in-out;
+  user-select: none;
 }
 
 </style>

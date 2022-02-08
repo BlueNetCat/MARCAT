@@ -41,8 +41,8 @@ export default {
   // https://github.com/vuejs/vue/issues/1988
   created(){
     // Non-reactive variables
-    this.$options.animations = [];
-    this.$options.OLMap = undefined;
+    this.animations = [];
+    this.OLMap = undefined;
   },
   mounted () {
 
@@ -61,7 +61,7 @@ export default {
       let id = event.currentTarget.id;
       // Find animEl
       let animSel;
-      this.$options.animations.forEach(a => {if (id == a.id) animSel = a;});
+      this.animations.forEach(a => {if (id == a.id) animSel = a;});
       animSel.canvas.hidden = !animSel.canvas.hidden;
       // Change button class
       if (animSel.canvas.hidden){ // Add opacity class
@@ -89,7 +89,7 @@ export default {
     start: function(infoWMS, animation, OLMap){
       
       // Declare OLMap
-      this.$options.OLMap = OLMap;
+      this.OLMap = OLMap;
 
       // Create canvas
       let canvas = document.createElement("canvas");
@@ -100,16 +100,16 @@ export default {
       this.$refs["app-animation"].appendChild(canvas);
 
       // Create animation engine
-      let animEngine = new AnimationEngine(canvas, this.$options.OLMap, infoWMS.exampleWMSURL, animation);
+      let animEngine = new AnimationEngine(canvas, this.OLMap, infoWMS.exampleWMSURL, animation);
 
       // Define map events for animation
       // Update canvas and positions
-      this.$options.OLMap.on('moveend', animEngine.onMapMoveEnd);
+      this.OLMap.on('moveend', animEngine.onMapMoveEnd);
       // Clear canvas
-      this.$options.OLMap.on('movestart', animEngine.onMapMoveStart);
+      this.OLMap.on('movestart', animEngine.onMapMoveStart);
 
       // Store animation in array
-      this.$options.animations.push({
+      this.animations.push({
         id: infoWMS.name,
         name: infoWMS.name,
         infoWMS: infoWMS,
@@ -133,9 +133,9 @@ export default {
       // Find selected animation and index
       let animSel;
       let idxSel;
-      this.$options.animations.forEach((a, idx) => {if (id == a.id) {animSel = a; idxSel = idx}});
+      this.animations.forEach((a, idx) => {if (id == a.id) {animSel = a; idxSel = idx}});
       // Destroy animation item
-      let animObj = this.$options.animations.splice(idxSel, 1)[0]; // The animation will stop because the canvas has no parent element
+      let animObj = this.animations.splice(idxSel, 1)[0]; // The animation will stop because the canvas has no parent element
       // TODO: GC (reuse anim object?)
       // Remove canvas from HTML DOM
       animObj.canvas.remove();
@@ -159,7 +159,7 @@ export default {
       // Check if an animation of the same type exists
       let animExists = false;
       let animObj;
-      this.$options.animations.forEach(a => {if (infoWMS.name == a.name) {animExists = true; animObj = a;}});
+      this.animations.forEach(a => {if (infoWMS.name == a.name) {animExists = true; animObj = a;}});
 
       if (!animExists){
         // Create new animation

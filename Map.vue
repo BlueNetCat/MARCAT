@@ -30,8 +30,8 @@ export default {
   name: 'app-map',
   created (){
     // Declare non-reactive variables
-    this.$options.map= undefined;
-    this.$options.layers = {
+    this.map= undefined;
+    this.layers = {
         bathymetry: new ol.layer.Tile({
             name: 'bathymetry',
             source: new ol.source.XYZ ({ // https://openlayers.org/en/latest/examples/xyz.html
@@ -117,8 +117,8 @@ export default {
           //opacity: 0.9
         })
       };
-    this.$options.layerData = undefined;
-    this.$options.pixelColor = [0, 0, 0, 0];
+    this.layerData = undefined;
+    this.pixelColor = [0, 0, 0, 0];
   },
   mounted () {
     this.initMap();
@@ -126,8 +126,8 @@ export default {
   },
   umounted () {
     this.$refs.OLMap.removeEventListener('mousemove', this.onMouseMove);
-    this.$options.map.un('moveend', this.onMapMoveEnd);
-    this.$options.map.un('movestart', this.onMapMoveStart); 
+    this.map.un('moveend', this.onMapMoveEnd);
+    this.map.un('movestart', this.onMapMoveStart); 
   },
   data () {
     return {
@@ -144,18 +144,18 @@ export default {
     // Figure clicked (TODO: emit)
     initMap: function () {
       // Initialize map
-      this.$options.map = new ol.Map({
+      this.map = new ol.Map({
         layers : [
           // Data layer
-          this.$options.layers.data,
+          this.layers.data,
           // Bathymetry
-          //this.$options.layers.bathymetry,
+          //this.layers.bathymetry,
           // Graticule layer
-          this.$options.layers.graticule,
+          this.layers.graticule,
           // Shoreline
-          this.$options.layers.shoreline,
+          this.layers.shoreline,
           // 12 nm
-          this.$options.layers.eez12nm,
+          this.layers.eez12nm,
           
         ],
         target: 'map',
@@ -171,15 +171,15 @@ export default {
       document.getElementsByClassName('ol-attribution')[0].style.top = '.5em';
 
       // Declare onmapmove events
-      this.$options.map.on('moveend', this.onMapMoveEnd);
-      this.$options.map.on('movestart', this.onMapMoveStart);
+      this.map.on('moveend', this.onMapMoveEnd);
+      this.map.on('movestart', this.onMapMoveStart);
     },
 
 
     // Get layer function
     getMapLayer: function(layerName){
       let selLayer;
-      this.$options.map.getLayers().forEach(layerItem => {
+      this.map.getLayers().forEach(layerItem => {
         //console.log(layerItem.get('name'));
         if (layerItem.get('name') == layerName)
           selLayer = layerItem;
@@ -215,7 +215,7 @@ export default {
       if (this.isMapMoving)
         return;
       // Get lat long coordinates
-      let coord = this.$options.map.getCoordinateFromPixel([event.clientX, event.clientY]);
+      let coord = this.map.getCoordinateFromPixel([event.clientX, event.clientY]);
       coord = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
       // Emit
       this.$emit('mouseMove', coord);
@@ -283,7 +283,7 @@ export default {
       // Get canvas
       let tmpCnv = layer.getRenderer().getImage();
       // Get data
-      this.$options.layerData = tmpCnv.getContext("2d").getImageData(0,0,tmpCnv.width,tmpCnv.height);
+      this.layerData = tmpCnv.getContext("2d").getImageData(0,0,tmpCnv.width,tmpCnv.height);
       // Store width to access pixels
       this.layerDataWidth = tmpCnv.width;
     },
@@ -292,8 +292,8 @@ export default {
     // Get pixel data
     getDataAtPixel: function(x , y){
       let imgArrayPos = (x + y * this.layerDataWidth) * 4; // + 1,2,3 if you want (R)GBA
-      let imgData = this.$options.layerData.data;
-      let color = this.$options.pixelColor;
+      let imgData = this.layerData.data;
+      let color = this.pixelColor;
       color[0] = imgData[imgArrayPos]
       color[1] = imgData[imgArrayPos+1]
       color[2] = imgData[imgArrayPos+2]
@@ -340,7 +340,7 @@ export default {
     
     // Get OL map object
     getOLMap: function(){
-      return this.$options.map;
+      return this.map;
     }
 
 
