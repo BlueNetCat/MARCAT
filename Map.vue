@@ -83,7 +83,7 @@ export default {
           source: new ol.source.VectorTile({
             attributions: '© European Environment Agency',
             format: new ol.format.MVT(),
-            url: '../geoportal/data/shoreline-tiles/{z}/{x}/{y}.pbf',
+            url: 'shoreline-tiles/{z}/{x}/{y}.pbf',
             maxZoom: 10, // Defined in MVT folders
             zDirection: -1
           }),
@@ -100,7 +100,7 @@ export default {
           source: new ol.source.VectorTile({
             attributions: '© Flanders Marine Institute',
             format: new ol.format.MVT(),
-            url: '../geoportal/data/eez_12nm/{z}/{x}/{y}.pbf',
+            url: 'eez_12nm/{z}/{x}/{y}.pbf',
             maxZoom: 9, // Defined in MVT folders
             zDirection: -1
           }),
