@@ -299,7 +299,8 @@ class SourceWMS {
       return '';
     }
     let tmpSTR = wmsURL.substr(wmsURL.indexOf(paramName + "="));
-    return tmpSTR.substring(paramName.length + 1, tmpSTR.indexOf('&'));
+    let endOfContent = tmpSTR.indexOf('&') == -1 ? tmpSTR.length : tmpSTR.indexOf('&');
+    return tmpSTR.substring(paramName.length + 1, endOfContent);
   }
 
 
